@@ -5,123 +5,89 @@ import { useNotify } from '../components/NotificationContext';
 
 interface CartContextType {
     cartCount: number;
-    refreshCart: () => Promise<void>;
-    addToCart: (product: any, currentUser: User | null) => Promise<void>;
-    mergeCart: (userId: string | number) => Promise<void>; // Hàm mới
+    refreshCart: () => void;
+    addToCart: (product: any) => void;
+    mergeCart: (userId: string | number) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+// Sử dụng chung 1 key duy nhất để dễ quản lý
+const CART_STORAGE_KEY = 'userCart';
+
 export const CartProvider = ({ children, currentUser }: { children: ReactNode, currentUser: User | null }) => {
     const [cartCount, setCartCount] = useState(0);
     const notify = useNotify();
-console.log('notify:', notify);
 
-
-    const refreshCart = async () => {
-        if (!currentUser) {
-            // Nếu chưa login, đếm số loại sp trong localStorage
-            const localData = localStorage.getItem('guestCart');
-            const items = localData ? JSON.parse(localData) : [];
-            setCartCount(items.length);
-            return;
-        }
-        try {
-            const res = await api.get(`/carts?userId=${currentUser.id}`);
-            if (res.data.length > 0) {
-                setCartCount(res.data[0].items?.length || 0);
-            } else {
-                setCartCount(0);
-            }
-        } catch (err) {
-            console.error("Lỗi cập nhật Badge:", err);
-        }
+    // 1. Refresh chỉ đọc từ LocalStorage
+    const refreshCart = () => {
+        const localData = localStorage.getItem(CART_STORAGE_KEY);
+        const items = localData ? JSON.parse(localData) : [];
+        setCartCount(items.length);
     };
 
-    const addToCart = async (product: any, user: User | null) => {
+    // 2. AddToCart luôn luôn lưu vào LocalStorage
+    const addToCart = (product: any) => {
         if (!product || product.inventory <= 0) {
-              notify.warning("Sản phẩm đã hết hàng!");
-            return ;
-        }
-        if (!user) {
-            // --- CHƯA LOGIN: LƯU LOCALSTORAGE ---
-            const localData = localStorage.getItem('guestCart');
-            let items = localData ? JSON.parse(localData) : [];
-
-            const existingItem = items.find((i: any) => i.productId === product.id);
-            if (existingItem) {
-                items = items.map((i: any) =>
-                    i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i
-                );
-            } else {
-                items.push({ productId: product.id, quantity: 1 });
-            }
-
-            localStorage.setItem('guestCart', JSON.stringify(items));
-            await refreshCart();
-            notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
-
+            notify.warning("Sản phẩm đã hết hàng!");
             return;
         }
 
-        // --- ĐÃ LOGIN: LƯU SERVER ---
-        // Trong addToCart hoặc refreshCart:
-try {
-    // Gọi kèm params để Firebase lọc (Nhớ cấu hình .indexOn trong Rules)
-    const res = await api.get('/carts', {
-        params: {
-            orderBy: '"userId"',
-            equalTo: user.id
-        }
-    });
+        const localData = localStorage.getItem(CART_STORAGE_KEY);
+        let items = localData ? JSON.parse(localData) : [];
 
-    let userCart = null;
-    let cartFirebaseKey = null;
-
-    if (res.data && Object.keys(res.data).length > 0) {
-        // Lấy Key ngẫu nhiên mà Firebase tạo (-Nxyz...)
-        cartFirebaseKey = Object.keys(res.data)[0]; 
-        userCart = res.data[cartFirebaseKey];
-    }
-
-    if (!userCart) {
-        // Nếu chưa có giỏ hàng, POST tạo mới
-        await api.post('/carts', { userId: user.id, items: [{ productId: product.id, quantity: 1 }] });
-    } else {
-        // Nếu đã có, PATCH vào đúng cartFirebaseKey
-        const existingItem = userCart.items?.find((i: any) => i.productId === product.id);
-        const newItems = existingItem
-            ? userCart.items.map((i: any) =>
+        const existingItem = items.find((i: any) => i.productId === product.id);
+        
+        if (existingItem) {
+            items = items.map((i: any) =>
                 i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i
-            )
-            : [...(userCart.items || []), { productId: product.id, quantity: 1 }];
-
-        await api.patch(`/carts/${cartFirebaseKey}`, { items: newItems });
-    }
-    await refreshCart();
-
-        notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
-        } catch (error) {
-            notify.error("Không thể thêm vào giỏ hàng!");
-
+            );
+        } else {
+            items.push({ 
+                productId: product.id, 
+                name: product.name, 
+                price: product.price, 
+                imageUrl: product.imageUrl,
+                quantity: 1 
+            });
         }
+
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+        refreshCart();
+        notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
     };
 
-    // Hàm gộp giỏ hàng từ LocalStorage lên Server
+    // 3. Hàm gộp giỏ hàng (Gọi sau khi Login thành công)
     const mergeCart = async (userId: string | number) => {
-        const localData = localStorage.getItem('guestCart');
+        const localData = localStorage.getItem(CART_STORAGE_KEY);
         if (!localData) return;
 
         const guestItems = JSON.parse(localData);
         if (guestItems.length === 0) return;
 
         try {
-            const res = await api.get(`/carts?userId=${userId}`);
-            let userCart = res.data[0];
+            // Lấy giỏ hàng hiện có trên Firebase của User
+            const res = await api.get('/carts', {
+                params: {
+                    orderBy: '"userId"',
+                    equalTo: userId
+                }
+            });
+
+            let userCart = null;
+            let cartFirebaseKey = null;
+
+            if (res.data && Object.keys(res.data).length > 0) {
+                cartFirebaseKey = Object.keys(res.data)[0];
+                userCart = res.data[cartFirebaseKey];
+            }
 
             if (!userCart) {
+                // Nếu server chưa có giỏ hàng, POST mới
                 await api.post('/carts', { userId, items: guestItems });
             } else {
-                let finalItems = [...userCart.items];
+                // Nếu đã có, tiến hành gộp dữ liệu
+                let finalItems = [...(userCart.items || [])];
                 guestItems.forEach((gItem: any) => {
                     const exist = finalItems.find(i => i.productId === gItem.productId);
                     if (exist) {
@@ -130,16 +96,22 @@ try {
                         finalItems.push(gItem);
                     }
                 });
-                await api.patch(`/carts/${userCart.id}`, { items: finalItems });
+                // Cập nhật lên Firebase
+                await api.patch(`/carts/${cartFirebaseKey}`, { items: finalItems });
+                
+                // Sau khi gộp xong, cập nhật lại LocalStorage để đồng bộ dữ liệu mới nhất từ Server về máy
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(finalItems));
             }
-            localStorage.removeItem('guestCart'); // Xóa sau khi đã gộp thành công
+            refreshCart();
         } catch (err) {
-        notify.error("Không thể thêm vào giỏ hàng!");
+            console.error("Lỗi gộp giỏ hàng:", err);
+            notify.error("Không thể đồng bộ giỏ hàng với máy chủ");
         }
     };
 
+    // Theo dõi trạng thái đăng nhập để refresh lại số lượng Badge
     useEffect(() => {
-        void refreshCart();
+        refreshCart();
     }, [currentUser]);
 
     return (
