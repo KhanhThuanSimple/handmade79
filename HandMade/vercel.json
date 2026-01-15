@@ -1,33 +1,16 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build"
-    }
+    { "src": "server.js", "use": "@vercel/node" },
+    { "src": "package.json", "use": "@vercel/static-build" }
   ],
   "rewrites": [
+    { "source": "/products", "destination": "server.js" },
+    { "source": "/products/(.*)", "destination": "server.js" },
+    { "source": "/api/(.*)", "destination": "server.js" },
     {
-      "source": "/products",
-      "destination": "/server.js"
-    },
-    {
-      "source": "/products/(.*)",
-      "destination": "/server.js"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/server.js"
-    },
-    {
-      
-  "source": "/((?!products|api|assets|static|favicon.ico|manifest.json|logo192.png).*)",
-  "destination": "/index.html"
-
+      "source": "/((?!products|api|assets|static|favicon.ico|manifest.json|logo192.png|logo512.png|.*\\.js|.*\\.css|.*\\.png|.*\\.jpg|.*\\.svg).*)",
+      "destination": "/index.html"
     }
   ]
 }
