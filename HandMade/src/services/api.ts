@@ -1,26 +1,29 @@
-    // src/services/api.ts
-    import axios from 'axios';
+import axios from 'axios';
 
-    // Tạo một instance axios với cấu hình mặc định
-    const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-        timeout: 10000, // Quá 10s thì báo lỗi
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        
-    });
-    console.log(process.env.REACT_APP_API_URL);
+// Kiểm tra xem đang chạy ở môi trường nào
+const isProduction = process.env.NODE_ENV === 'production';
 
-    // (Tùy chọn) Interceptor để xử lý lỗi mạng chung
-    api.interceptors.response.use(
-        (response) => response,
-        (error) => {
-            if (error.message === "Network Error") {
-                console.error("Không kết nối được json-server!");
-            }
-            return Promise.reject(error);
+const api = axios.create({
+    // Nếu là production (Vercel), dùng đường dẫn tương đối '/'
+    // Nếu là local, có thể dùng biến môi trường hoặc mặc định localhost
+    baseURL: isProduction ? '/' : (process.env.REACT_APP_API_URL || 'http://localhost:5000'),
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// Log để bạn kiểm tra trên Console của trình duyệt
+console.log("Current API BaseURL:", api.defaults.baseURL);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.message === "Network Error") {
+            console.error("Lỗi kết nối API! Kiểm tra server.js trên Vercel.");
         }
-    );
+        return Promise.reject(error);
+    }
+);
 
-    export default api;
+export default api;
