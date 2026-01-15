@@ -63,30 +63,46 @@ console.log('notify:', notify);
             return;
         }
 
-        // --- ĐÃ LOGIN: LƯU SERVER ---
-        try {
-            const res = await api.get(`/carts?userId=${user.id}`);
-            let userCart = res.data[0];
-
-            if (!userCart) {
-                const newCart = { userId: user.id, items: [{ productId: product.id, quantity: 1 }] };
-                await api.post('/carts', newCart);
-            } else {
-                const existingItem = userCart.items.find((i: any) => i.productId === product.id);
-                const newItems = existingItem
-                    ? userCart.items.map((i: any) =>
-                        i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i
-                    )
-                    : [...userCart.items, { productId: product.id, quantity: 1 }];
-
-                await api.patch(`/carts/${userCart.id}`, { items: newItems });
-            }
-            await refreshCart();
-        notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
-        } catch (error) {
-            notify.error("Không thể thêm vào giỏ hàng!");
-
+      // --- ĐÃ LOGIN: LƯU SERVER ---
+try {
+    // 1. Lấy giỏ hàng của user này
+    const res = await api.get('/carts', {
+        params: {
+            orderBy: '"userId"',
+            equalTo: user.id
         }
+    });
+
+    let userCart = null;
+    let firebaseKey = null;
+
+    if (res.data && Object.keys(res.data).length > 0) {
+        firebaseKey = Object.keys(res.data)[0];
+        userCart = Object.values(res.data)[0] as any;
+    }
+
+    if (!userCart) {
+        // Tạo giỏ hàng mới nếu chưa có
+        const newCart = { userId: user.id, items: [{ productId: product.id, quantity: 1 }] };
+        await api.post('/carts', newCart);
+    } else {
+        // Cập nhật giỏ hàng cũ
+        const existingItem = userCart.items?.find((i: any) => i.productId === product.id);
+        const newItems = existingItem
+            ? userCart.items.map((i: any) =>
+                i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i
+            )
+            : [...(userCart.items || []), { productId: product.id, quantity: 1 }];
+
+        // Sử dụng firebaseKey (ví dụ: -Nabc...) để update
+        await api.patch(`/carts/${firebaseKey}`, { items: newItems });
+    }
+    await refreshCart();
+    notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
+} catch (error) {
+    console.error(error);
+    notify.error("Không thể thêm vào giỏ hàng!");
+}
     };
 
     // Hàm gộp giỏ hàng từ LocalStorage lên Server
