@@ -6,7 +6,7 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 // Quan trọng: Thêm rewrite để route đúng vào router của json-server
 server.use(jsonServer.rewriter({
-  '/api/*': '/$1'
+  '/*': '/$1'
 }));
 server.use(router);
 
