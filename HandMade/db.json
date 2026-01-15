@@ -2241,6 +2241,62 @@
       "content": "Bạn đang tìm kiếm sản phẩm hot trend? 😊\n\nHiện tại, sản phẩm hot trend của Shop là Nhẫn Bạc Hoa Trà - Xem tại: http://localhost:3000/product/66. Nó được làm từ chất liệu bạc cao cấp, thiết kế hoa trà tinh tế, phù hợp với nhiều phong cách thời trang khác nhau.\n\nHoặc bạn có thể tham khảo thêm các mẫu Túi Ví handmade của Shop tại đây: http://localhost:3000/products?page=1&cat=1. Các sản phẩm này đều được thiết kế với những chi tiết độc đáo, màu sắc tươi sáng và chất liệu mềm mại.\n\nBạn muốn tìm quà tặng hay dùng cá nhân ạ? 💎\n\nTags: trang sức, phụ kiện, thời trang, handmade.",
       "sender": "bot",
       "createdAt": "2026-01-15T09:08:22.354Z"
+    },
+    {
+      "id": "0412",
+      "userId": "cbc1",
+      "content": "ví ",
+      "sender": "user",
+      "createdAt": "2026-01-15T14:32:22.813Z"
+    },
+    {
+      "id": "0412",
+      "userId": "cbc1",
+      "content": "ví ",
+      "sender": "user",
+      "createdAt": "2026-01-15T14:32:22.813Z"
+    },
+    {
+      "id": "88b9",
+      "userId": "cbc1",
+      "content": "Shop - Bạn đang tìm kiếm một chiếc ví handmade độc đáo chưa ạ? \n\n- Ví Da Nam Bifold Cổ Điển: http://localhost:3000/product/2 (Chất liệu da cao cấp, thiết kế cổ điển tinh tế)\n- Ví Cầm Tay Clutch Dự Tiệc: http://localhost:3000/product/5 (Thiết kế phong cách, phù hợp cho các sự kiện quan trọng)\n\nBạn muốn tìm quà tặng hay dùng cá nhân ạ? \nTags: ví da, túi handmade",
+      "sender": "bot",
+      "createdAt": "2026-01-15T14:32:24.341Z"
+    },
+    {
+      "id": "88b9",
+      "userId": "cbc1",
+      "content": "Shop - Bạn đang tìm kiếm một chiếc ví handmade độc đáo chưa ạ? \n\n- Ví Da Nam Bifold Cổ Điển: http://localhost:3000/product/2 (Chất liệu da cao cấp, thiết kế cổ điển tinh tế)\n- Ví Cầm Tay Clutch Dự Tiệc: http://localhost:3000/product/5 (Thiết kế phong cách, phù hợp cho các sự kiện quan trọng)\n\nBạn muốn tìm quà tặng hay dùng cá nhân ạ? \nTags: ví da, túi handmade",
+      "sender": "bot",
+      "createdAt": "2026-01-15T14:32:24.341Z"
+    },
+    {
+      "id": "a673",
+      "userId": "cbc1",
+      "content": "lình khùng",
+      "sender": "user",
+      "createdAt": "2026-01-15T14:32:35.342Z"
+    },
+    {
+      "id": "a673",
+      "userId": "cbc1",
+      "content": "lình khùng",
+      "sender": "user",
+      "createdAt": "2026-01-15T14:32:35.342Z"
+    },
+    {
+      "id": "756a",
+      "userId": "cbc1",
+      "content": "Tôi xin lỗi vì không thể giúp bạn với thông tin đó. Bạn có muốn hỏi về một sản phẩm cụ thể trong \"HandMade Shop\" không ạ? 😊",
+      "sender": "bot",
+      "createdAt": "2026-01-15T14:32:36.606Z"
+    },
+    {
+      "id": "756a",
+      "userId": "cbc1",
+      "content": "Tôi xin lỗi vì không thể giúp bạn với thông tin đó. Bạn có muốn hỏi về một sản phẩm cụ thể trong \"HandMade Shop\" không ạ? 😊",
+      "sender": "bot",
+      "createdAt": "2026-01-15T14:32:36.606Z"
     }
   ],
   "faq": [
@@ -5412,7 +5468,17 @@
       "userId": "1",
       "items": [],
       "totalPrice": 0,
-      "id": "3b5c"
+      "id": "2da8"
+    },
+    {
+      "id": "3834",
+      "userId": "cbc1",
+      "items": [
+        {
+          "productId": "122",
+          "quantity": 1
+        }
+      ]
     }
   ],
   "categories": [
@@ -5723,6 +5789,35 @@
       "paymentMethod": "COD",
       "status": "Thanh toán khi nhận hàng",
       "date": "15:41:50 15/1/2026"
+    },
+    {
+      "id": "ORD-1768487505816",
+      "userId": "cbc1",
+      "fullName": "thuan",
+      "phone": "0987654321",
+      "address": "ạdlawd, Xã Lạc Phượng, Huyện Tứ Kỳ, Tỉnh Hải Dương",
+      "items": [
+        {
+          "product": {
+            "id": "122",
+            "name": "Vòng tay Handmade da thật",
+            "price": 180000,
+            "category": "Đồ da",
+            "categoryId": 6,
+            "imageUrl": "https://product.hstatic.net/1000260559/product/vong_tay_handmade_da_that__3__grande.jpg",
+            "description": "Vòng tay được làm từ da bò thật với thiết kế đơn giản mang hơi hướng cổ điển nhưng vẫn vô cùng cá tính . Vòng có nhiều phiên bản màu sắc cho bạn lựa chọn .\n\n",
+            "inventory": 20
+          },
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 150000,
+      "discountAmount": 30000,
+      "payableAmount": 150000,
+      "voucherCode": "SHIPFREE30",
+      "paymentMethod": "VNPAY",
+      "status": "Chờ thanh toán",
+      "date": "21:31:45 15/1/2026"
     }
   ],
   "policyData": [
@@ -5802,7 +5897,7 @@
       "email": "thuan11111@gmail.com",
       "password": "123456",
       "username": "Thuan",
-      "lastSpinDate": "2026-01-15T08:47:26.103Z",
+      "lastSpinDate": "2026-01-15T14:32:57.708Z",
       "wishlist": [
         {
           "id": "38",
@@ -5835,16 +5930,6 @@
           "inventory": 20
         },
         {
-          "id": "122",
-          "name": "Vòng tay Handmade da thật",
-          "price": 180000,
-          "category": "Đồ da",
-          "categoryId": 6,
-          "imageUrl": "https://product.hstatic.net/1000260559/product/vong_tay_handmade_da_that__3__grande.jpg",
-          "description": "Vòng tay được làm từ da bò thật với thiết kế đơn giản mang hơi hướng cổ điển nhưng vẫn vô cùng cá tính . Vòng có nhiều phiên bản màu sắc cho bạn lựa chọn .\n\n",
-          "inventory": 20
-        },
-        {
           "id": "123",
           "name": "Túi xách nữ Handmade da bò retro thời trang",
           "price": 210000,
@@ -5854,7 +5939,8 @@
           "description": "- Kích thước: 19.5cm x 9.5cm x 2cm\n\n- Chất liệu: Da bò thật 100%",
           "inventory": 20
         }
-      ]
+      ],
+      "points": 0
     },
     {
       "id": "aae8",
