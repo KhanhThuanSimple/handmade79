@@ -6,9 +6,8 @@ const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
-server.use(jsonServer.bodyParser);
 
-// KHÔNG dùng /api
-server.use('/', router);
+// KHÔNG listen
+server.use(router);
 
 module.exports = server;

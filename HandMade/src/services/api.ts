@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const api = axios.create({
     // Nếu là production (Vercel), dùng đường dẫn tương đối '/'
     // Nếu là local, có thể dùng biến môi trường hoặc mặc định localhost
-    baseURL: isProduction ? '/' : (process.env.REACT_APP_API_URL || 'http://localhost:5000'),
+    baseURL: isProduction ? '' : (process.env.REACT_APP_API_URL || 'http://localhost:5000'),
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
