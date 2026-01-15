@@ -5412,7 +5412,21 @@
       "userId": "1",
       "items": [],
       "totalPrice": 0,
-      "id": "d0fc"
+      "id": "2e95"
+    },
+    {
+      "id": "665d",
+      "userId": "cbc1",
+      "items": [
+        {
+          "productId": "122",
+          "quantity": 1
+        },
+        {
+          "productId": "123",
+          "quantity": 1
+        }
+      ]
     }
   ],
   "categories": [
@@ -5822,26 +5836,6 @@
           "categoryId": 6,
           "imageUrl": "https://product.hstatic.net/1000260559/product/tui_xach_nu__1__acaea5fbd93844ee83531408f5d294ee_grande.jpg",
           "description": "Độ bền da thật cao, không bong tróc, nứt gãy, không ra màu, độ đàn hồi và chịu lực tốt là những ưu điểm nổi bật giúp chất liệu này được sử dụng rộng rãi trong ngành thời trang nữ",
-          "inventory": 20
-        },
-        {
-          "id": "122",
-          "name": "Vòng tay Handmade da thật",
-          "price": 180000,
-          "category": "Đồ da",
-          "categoryId": 6,
-          "imageUrl": "https://product.hstatic.net/1000260559/product/vong_tay_handmade_da_that__3__grande.jpg",
-          "description": "Vòng tay được làm từ da bò thật với thiết kế đơn giản mang hơi hướng cổ điển nhưng vẫn vô cùng cá tính . Vòng có nhiều phiên bản màu sắc cho bạn lựa chọn .\n\n",
-          "inventory": 20
-        },
-        {
-          "id": "123",
-          "name": "Túi xách nữ Handmade da bò retro thời trang",
-          "price": 210000,
-          "category": "Đồ da",
-          "categoryId": 6,
-          "imageUrl": "https://product.hstatic.net/1000260559/product/vi_dai_nu__3__f301f02c16b24e2c83f90e0a2058ab30_grande.jpg",
-          "description": "- Kích thước: 19.5cm x 9.5cm x 2cm\n\n- Chất liệu: Da bò thật 100%",
           "inventory": 20
         },
         {
