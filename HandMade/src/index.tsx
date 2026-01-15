@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { NotificationProvider } from './components/NotificationContext';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 const root = ReactDOM.createRoot(
@@ -12,14 +13,15 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <ErrorBoundary>
       <NotificationProvider>
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </NotificationProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
