@@ -7,22 +7,11 @@ const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 
-// Health check
-server.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'API is working',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// API routes
+// API chỉ chạy dưới /api
 server.use('/api', router);
 
-// Error handling
-server.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).json({ error: 'Internal server error' });
+server.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
 module.exports = server;
