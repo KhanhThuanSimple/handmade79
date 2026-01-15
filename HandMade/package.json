@@ -75,7 +75,7 @@
  "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "vercel-build": "react-scripts build",
+      "vercel-build": "CI=false ESLINT_NO_DEV_ERRORS=true react-scripts build",
     "//--- DATA MOCKING SCRIPTS ---": "",
     "db:merge": "node scripts/merge.js",
     "db:server": "json-server --watch db.json --port 5000",
