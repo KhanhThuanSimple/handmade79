@@ -83,7 +83,7 @@ export const useProductFeatures = ({ products, itemsPerPage = 9 }: { products: P
             newParams.set('page', '1');
             setSearchParams(newParams);
         }
-    }, [searchQuery, searchParams, setSearchParams]);
+    }, [searchQuery, searchParams]);
 
     return {
         searchQuery,
