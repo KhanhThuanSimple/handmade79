@@ -63,9 +63,10 @@ console.log('notify:', notify);
             return;
         }
 
-      // Sửa lại logic trong phần "ĐÃ LOGIN" của hàm addToCart
+        // --- ĐÃ LOGIN: LƯU SERVER ---
+        // Trong addToCart hoặc refreshCart:
 try {
-    // 1. Gọi API với đúng cấu trúc Firebase (Yêu cầu đã sửa Rules .indexOn: ["userId"])
+    // Gọi kèm params để Firebase lọc (Nhớ cấu hình .indexOn trong Rules)
     const res = await api.get('/carts', {
         params: {
             orderBy: '"userId"',
@@ -74,19 +75,19 @@ try {
     });
 
     let userCart = null;
-    let firebaseKey = null;
+    let cartFirebaseKey = null;
 
-    // 2. Lấy Key và Value đầu tiên từ Object trả về
     if (res.data && Object.keys(res.data).length > 0) {
-        firebaseKey = Object.keys(res.data)[0]; // Đây là cái ID cần để PATCH (-Nxyz...)
-        userCart = res.data[firebaseKey];       // Đây là nội dung giỏ hàng
+        // Lấy Key ngẫu nhiên mà Firebase tạo (-Nxyz...)
+        cartFirebaseKey = Object.keys(res.data)[0]; 
+        userCart = res.data[cartFirebaseKey];
     }
 
     if (!userCart) {
-        // Tạo mới nếu chưa có giỏ hàng
+        // Nếu chưa có giỏ hàng, POST tạo mới
         await api.post('/carts', { userId: user.id, items: [{ productId: product.id, quantity: 1 }] });
     } else {
-        // Cập nhật mảng items
+        // Nếu đã có, PATCH vào đúng cartFirebaseKey
         const existingItem = userCart.items?.find((i: any) => i.productId === product.id);
         const newItems = existingItem
             ? userCart.items.map((i: any) =>
@@ -94,15 +95,15 @@ try {
             )
             : [...(userCart.items || []), { productId: product.id, quantity: 1 }];
 
-        // 3. Sử dụng firebaseKey để cập nhật đúng bản ghi
-        await api.patch(`/carts/${firebaseKey}`, { items: newItems });
+        await api.patch(`/carts/${cartFirebaseKey}`, { items: newItems });
     }
-    
     await refreshCart();
-    notify.success("Thành công!");
-} catch (error) {
-    notify.error("Lỗi kết nối Server!");
-}
+
+        notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
+        } catch (error) {
+            notify.error("Không thể thêm vào giỏ hàng!");
+
+        }
     };
 
     // Hàm gộp giỏ hàng từ LocalStorage lên Server
