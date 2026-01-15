@@ -9,7 +9,7 @@
     { "source": "/products/(.*)", "destination": "server.js" },
     { "source": "/api/(.*)", "destination": "server.js" },
     {
-      "source": "/((?!products|api|assets|static|favicon.ico|manifest.json|logo192.png|logo512.png|.*\\.js|.*\\.css|.*\\.png|.*\\.jpg|.*\\.svg).*)",
+      "source": "/((?!products|api|assets|static|favicon.ico|manifest.json|logo192.png|logo512.png|.*\\.js|.*\\.css|.*\\.png|.*\\.jpg|.*\\.svg|.*\\.ico).*)",
       "destination": "/index.html"
     }
   ]
