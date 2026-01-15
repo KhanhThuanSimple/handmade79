@@ -7,10 +7,11 @@ const api = axios.create({
 
 // Interceptor tự động thêm .json vào cuối mỗi request
 api.interceptors.request.use((config) => {
-  // Ví dụ: '/products' sẽ thành '/products.json'
-  // Nếu url đã có .json hoặc là url tuyệt đối thì bỏ qua
   if (config.url && !config.url.includes('.json')) {
-    config.url = `${config.url}.json`;
+    // Tách phần query string nếu có
+    const [path, query] = config.url.split('?');
+    // Ghép lại theo đúng chuẩn Firebase: path + .json + query
+    config.url = query ? `${path}.json?${query}` : `${path}.json`;
   }
   return config;
 }, (error) => {
