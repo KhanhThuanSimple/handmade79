@@ -63,9 +63,9 @@ console.log('notify:', notify);
             return;
         }
 
-      // --- ĐÃ LOGIN: LƯU SERVER ---
+      // Sửa lại logic trong phần "ĐÃ LOGIN" của hàm addToCart
 try {
-    // 1. Lấy giỏ hàng của user này
+    // 1. Gọi API với đúng cấu trúc Firebase (Yêu cầu đã sửa Rules .indexOn: ["userId"])
     const res = await api.get('/carts', {
         params: {
             orderBy: '"userId"',
@@ -76,17 +76,17 @@ try {
     let userCart = null;
     let firebaseKey = null;
 
+    // 2. Lấy Key và Value đầu tiên từ Object trả về
     if (res.data && Object.keys(res.data).length > 0) {
-        firebaseKey = Object.keys(res.data)[0];
-        userCart = Object.values(res.data)[0] as any;
+        firebaseKey = Object.keys(res.data)[0]; // Đây là cái ID cần để PATCH (-Nxyz...)
+        userCart = res.data[firebaseKey];       // Đây là nội dung giỏ hàng
     }
 
     if (!userCart) {
-        // Tạo giỏ hàng mới nếu chưa có
-        const newCart = { userId: user.id, items: [{ productId: product.id, quantity: 1 }] };
-        await api.post('/carts', newCart);
+        // Tạo mới nếu chưa có giỏ hàng
+        await api.post('/carts', { userId: user.id, items: [{ productId: product.id, quantity: 1 }] });
     } else {
-        // Cập nhật giỏ hàng cũ
+        // Cập nhật mảng items
         const existingItem = userCart.items?.find((i: any) => i.productId === product.id);
         const newItems = existingItem
             ? userCart.items.map((i: any) =>
@@ -94,14 +94,14 @@ try {
             )
             : [...(userCart.items || []), { productId: product.id, quantity: 1 }];
 
-        // Sử dụng firebaseKey (ví dụ: -Nabc...) để update
+        // 3. Sử dụng firebaseKey để cập nhật đúng bản ghi
         await api.patch(`/carts/${firebaseKey}`, { items: newItems });
     }
+    
     await refreshCart();
-    notify.success(`Đã thêm "${product.name}" vào giỏ hàng`);
+    notify.success("Thành công!");
 } catch (error) {
-    console.error(error);
-    notify.error("Không thể thêm vào giỏ hàng!");
+    notify.error("Lỗi kết nối Server!");
 }
     };
 
