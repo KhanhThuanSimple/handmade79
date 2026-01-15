@@ -9,13 +9,15 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "build",
+        "installCommand": "npm install",
+        "buildCommand": "npm run vercel-build"
       }
     }
   ],
   "routes": [
     {
-      "src": "^/(products|categories|users)(/.*)?$",
+      "src": "/api/(.*)",
       "dest": "/server.js"
     },
     {

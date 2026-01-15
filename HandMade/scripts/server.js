@@ -7,7 +7,10 @@ const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 
-// KHÔNG listen
-server.use(router);
+// Sửa lại route API
+server.use('/api', router);
+
+// KHÔNG sử dụng listen() trong server.js
+// Vercel sẽ tự động handle
 
 module.exports = server;

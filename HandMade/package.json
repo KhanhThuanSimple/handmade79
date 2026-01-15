@@ -72,8 +72,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+ "build": "react-scripts build",
     "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "vercel-build": "react-scripts build",
     "//--- DATA MOCKING SCRIPTS ---": "",
     "db:merge": "node scripts/merge.js",
     "db:server": "json-server --watch db.json --port 5000",
