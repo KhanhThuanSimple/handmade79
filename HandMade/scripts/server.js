@@ -9,7 +9,7 @@ server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
 // API
-server.use('/api', router);
+server.use('/', router);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
