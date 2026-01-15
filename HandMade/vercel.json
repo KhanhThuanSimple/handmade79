@@ -24,8 +24,10 @@
       "destination": "/server.js"
     },
     {
-      "source": "/((?!products|api|assets|static|favicon.ico).*)",
-      "destination": "/index.html"
+      
+  "source": "/((?!products|api|assets|static|favicon.ico|manifest.json|logo192.png).*)",
+  "destination": "/index.html"
+
     }
   ]
 }
